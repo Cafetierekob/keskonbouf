@@ -1,24 +1,17 @@
 import os
+import sys
+sys.path.insert(0,"/home/clement/Bureau/keskonbouf")
 from dotenv import load_dotenv
 import os
 import json
 from fastapi import FastAPI
 from pymongo import MongoClient
+from mongodbconnect import mongoConnect
 load_dotenv()
 
-user = os.getenv("mongoUser")
-mdp = os.getenv("mongoPass")
-uri = f"mongodb+srv://{user}:{mdp}@cluster0.ovnztph.mongodb.net"
-
-# Create a new client and connect to the server
-client = MongoClient(uri)
-
 # Connexion to the database
-db = client["keskonbouf"]
-
-# Connexion to the collection
-recettes = db["recettes"]
-
+keskonbouf = mongoConnect('mongoUser',"mongoPass","keskonbouf","recettes")
+recettes = keskonbouf.collection
 
 # Instanciate the API controller
 
@@ -33,14 +26,24 @@ app = FastAPI(
 
 @app.get("/randomRecettes")
 def getOneRecette():
-    recette = recettes.find_one()
-    recette.pop("_id")
-    return recette
+    recetteRandom = recettes.find_one()
+    recetteRandom.pop("_id")
+    return recetteRandom
+
+@app.get("/Xrecettes")
+def getXrecettes(numberOfRecettes : int, volaille : bool, viande : bool):
+    list= []
+    for i in recettes.find({"$and" : [{"volaille":volaille}, {"viande" : viande}]}).limit(int(numberOfRecettes)):
+        list.append(i)
+    return list
 
 @app.put("/nouvelleRecette")
 def addOneRecette(recetteToAdd : dict):
     recettes.insert_one(recetteToAdd)
 
+@app.delete("/deleteRecette")
+def deleteOneRecette(recetteToDelete : str):
+    recettes.delete_one({"name" : recetteToDelete})
 
 
 
