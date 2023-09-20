@@ -62,21 +62,40 @@ st.divider()
 st.header("Planning de la semaine")
 
 # Dataframe of a week. 
-with st.form("Semaine"):
-    colonnes = {"Lundi": [False,False],"Mardi": [False,False],"Mercredi": [False,False],"Jeudi": [False,False],"Vendredi": [False,False],"Samedi": [False,False],"Dimanche": [False,False]}
-    df = pd.DataFrame(data=colonnes, index=["Midi","Soir"] )
-    edited_df = st.data_editor(df)
 
-    formButton = st.form_submit_button("Let's Go !")
+colonnes = {"Lundi": [False,False],"Mardi": [False,False],"Mercredi": [False,False],"Jeudi": [False,False],"Vendredi": [False,False],"Samedi": [False,False],"Dimanche": [False,False]}
+df = pd.DataFrame(data=colonnes, index=["Midi","Soir"] )
+edited_df = st.data_editor(df)
+
+
+végé = st.checkbox("Végétarienne", key="multipleRecettesVege") # Végé or not
+if végé:
+    volaille = st.checkbox("Sans volaille",value= True, disabled=True, key="multipleRecettesVolaille") # with volaille or not
+else:
+    volaille = st.checkbox("Sans volaille",key="multipleRecettesVolaille")
+
+végé = not végé
+volaille = not volaille # Changing from "without viande" to "végé"
+
+button = st.button("Let's Go !")
 
 # Number of recettes
-    if formButton:
-        for column in df:
-            a = edited_df[column].isin([True]).sum()
-            if a != 0:
-                nbr = edited_df.value_counts(column)[True].sum().sum()
-                total += nbr
-        st.write(total)
-
+total=0
+if button:
+    for column in df:
+        a = edited_df[column].isin([True]).sum()
+        if a != 0:
+            nbr = edited_df.value_counts(column)[True].sum().sum()
+            total += nbr
+    if total == 0:
+        st.write("Pas besoin de recette si on mange pas de la semaine !")
+    else:
 # Get recettes
-
+        parametres = {"numberOfRecettes":total,"volaille":volaille,"viande":végé}
+        recettes = requests.get("http://0.0.0.0:8000/Xrecettes", params=parametres)
+        recettes = recettes.json()
+        if recettes == []:
+            st.write("Aucune recette ne correspond à votre demande")
+        else:
+            for i in recettes:
+                st.write(i)

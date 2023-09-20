@@ -35,7 +35,8 @@ def getOneRecette(volaille : bool, viande : bool):
 def getXrecettes(numberOfRecettes : int, volaille : bool, viande : bool):
     listRecettes= []
     for i in recettes.find({"$and" : [{"volaille":volaille}, {"viande" : viande}]}).limit(int(numberOfRecettes)):
-        recettes.append(i)
+        i.pop("_id")
+        listRecettes.append(i)
     return listRecettes
 
 @app.put("/nouvelleRecette")
