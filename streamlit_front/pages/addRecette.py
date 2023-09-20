@@ -26,7 +26,10 @@ recetteName = st.text_input("Quelle recette souhaitez-vous ajouter ?")
 volaille = st.checkbox("La recette contient de la volaille")
 
 # Viande ?
-viande = st.checkbox("La recette contient de la viande")
+if volaille:
+    viande = st.checkbox("La recette contient de la viande", value=True, disabled=True)
+else:
+    viande = st.checkbox("La recette contient de la viande")
 
 # Where is the recette?
 recetteLocation = st.selectbox("Où la recette est-elle stockée ?", ("Sur internet", "Recette officielle Mr Cuisine", "Dans un livre de recettes", "Dans le carnet de recette", "Pas de recette précise"))
