@@ -20,7 +20,7 @@ st.divider()
 
 
 # recette name
-recetteName = st.text_input("Quel recette souhaitez-vous ajouter ?")
+recetteName = st.text_input("Quelle recette souhaitez-vous ajouter ?")
 
 # Volaille ?
 volaille = st.checkbox("La recette contient de la volaille")
@@ -29,9 +29,9 @@ volaille = st.checkbox("La recette contient de la volaille")
 viande = st.checkbox("La recette contient de la viande")
 
 # Where is the recette?
-recetteLocation = st.selectbox("Où la recette est-elle stockée ?", ("Sur internet", "Recette officielle Mr Cuisine", "Dans un livre de recettes", "Dans le carnet de recette"))
+recetteLocation = st.selectbox("Où la recette est-elle stockée ?", ("Sur internet", "Recette officielle Mr Cuisine", "Dans un livre de recettes", "Dans le carnet de recette", "Pas de recette précise"))
 
-# Precise localisation and data formalization
+# Precise localisation
 if recetteLocation == "Sur internet":
     url = st.text_input("URL de la recette")
     local = "internet"
@@ -42,23 +42,26 @@ elif recetteLocation == "Dans un livre de recettes":
 elif recetteLocation == "Dans le carnet de recette":
     section = st.selectbox("Dans quelle section du carnet est-elle ?", ("Recettes salées", "Recettes sucrées"))
     local = "carnet"
-else:
+elif recetteLocation == "Recette officielle Mr Cuisine":
     local = "mrCuisine"
+else:
+    local = "Sans recette"
 
-# input to dic
+# input to dict
 if local == "mrCuisine":
     form = {"name" : recetteName, "volaille" : volaille, "viande" : viande, "localisation" : {"principal" : recetteLocation}}
 elif local == "internet":
     form = {"name" : recetteName, "volaille" : volaille, "viande" : viande, "localisation" : {"principal" : recetteLocation, "url":url}}
 elif local == "livre":
     form = {"name" : recetteName, "volaille" : volaille, "viande" : viande, "localisation" : {"principal" : recetteLocation, "title" : title, "page" : page}}
-else :
+elif local == "carnet" :
     form = {"name" : recetteName, "volaille" : volaille, "viande" : viande, "localisation" : {"principal" : recetteLocation, "section" : section}}
+else :
+    form = {"name" : recetteName, "volaille" : volaille, "viande" : viande, "localisation" : {"principal" : recetteLocation}}
 
 
 
-
-# Add button
+# Send to mongoDB
 if st.button("Ajouter la recette !"):
     requests.put("http://0.0.0.0:8000/nouvelleRecette", data = json.dumps(form))
     st.text("La recette a bien été ajoutée !")

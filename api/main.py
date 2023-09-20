@@ -25,17 +25,18 @@ app = FastAPI(
 )
 
 @app.get("/randomRecettes")
-def getOneRecette():
-    recetteRandom = recettes.find_one()
-    recetteRandom.pop("_id")
-    return recetteRandom
+def getOneRecette(volaille : bool, viande : bool):
+    recetteRandom = recettes.aggregate([{"$match": {"volaille":volaille,"viande":viande}},{"$sample":{"size":1}}])
+    for i in recetteRandom:
+        i.pop("_id")
+        return i
 
 @app.get("/Xrecettes")
 def getXrecettes(numberOfRecettes : int, volaille : bool, viande : bool):
-    list= []
+    listRecettes= []
     for i in recettes.find({"$and" : [{"volaille":volaille}, {"viande" : viande}]}).limit(int(numberOfRecettes)):
-        list.append(i)
-    return list
+        recettes.append(i)
+    return listRecettes
 
 @app.put("/nouvelleRecette")
 def addOneRecette(recetteToAdd : dict):
