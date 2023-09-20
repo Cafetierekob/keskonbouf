@@ -2,7 +2,7 @@ import sys
 sys.path.insert(0,"/home/clement/Bureau/keskonbouf")
 import streamlit as st
 import requests
-from function import getXRecettes
+import pandas as pd
 
 # Page metadata
 st.set_page_config(
@@ -60,4 +60,23 @@ st.divider()
 
 # Get X recette for the week
 st.header("Planning de la semaine")
+
+# Dataframe of a week. 
+with st.form("Semaine"):
+    colonnes = {"Lundi": [False,False],"Mardi": [False,False],"Mercredi": [False,False],"Jeudi": [False,False],"Vendredi": [False,False],"Samedi": [False,False],"Dimanche": [False,False]}
+    df = pd.DataFrame(data=colonnes, index=["Midi","Soir"] )
+    edited_df = st.data_editor(df)
+
+    formButton = st.form_submit_button("Let's Go !")
+
+# Number of recettes
+    if formButton:
+        for column in df:
+            a = edited_df[column].isin([True]).sum()
+            if a != 0:
+                nbr = edited_df.value_counts(column)[True].sum().sum()
+                total += nbr
+        st.write(total)
+
+# Get recettes
 
