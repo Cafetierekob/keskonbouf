@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keskonbouf-api
+  labels:
+    app: keskonbouf
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: keskonbouf
+  template:
+    metadata:
+      labels:
+        app: keskonbouf
+    spec:
+      containers:
+      - name: api
+        image: keskonbouf_api:latest
+        imagePullPolicy: Never
+        ports:
+        -containerPort: 80
+        env:
+        - name: mongoUserName
+          ValueFrom:
+            SecretKeyRef:
+              name: user-mongo
+              key: mongoUser
+        - name: mongomdp
+          ValueFrom:
+            SecretKeyRef:
+              name : mdp-mongo
+              key : mongoPass

@@ -1,9 +1,6 @@
 import os
-import sys
-sys.path.insert(0,"/home/clement/Bureau/keskonbouf")
 from dotenv import load_dotenv
 import os
-import json
 from fastapi import FastAPI
 from pymongo import MongoClient
 from mongodbconnect import mongoConnect

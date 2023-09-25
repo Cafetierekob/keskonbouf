@@ -1,14 +1,15 @@
 FROM python:3.11
 
-WORKDIR /streamlit
+WORKDIR /api
 
 COPY ./requirements.txt .
-COPY ./pages ./pages/
+
+COPY mongodbconnect.py .
+
 COPY ./main.py .
 
 RUN pip install --no-cache-dir --upgrade pip \
   && pip install --no-cache-dir -r requirements.txt
 
-
-CMD streamlit run main.py
+CMD python3 main.py
 

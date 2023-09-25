@@ -20,7 +20,7 @@ st.header("Générateur de planning de repas")
 st.divider()
 
 # Get a random recette
-st.header("Besion d'une seule recette ?")
+st.header("Besoin d'une seule recette ?")
 
 végé = st.checkbox("Végétarienne") # Végé or not
 
@@ -38,7 +38,7 @@ volaille = not volaille # Changing from "without viande" to "végé"
 submitted = st.button("Let's go !")
 if submitted:
     parametres = {"volaille" : volaille,"viande" : végé}
-    recette = requests.get("http://0.0.0.0:8000/randomRecettes", params=parametres)
+    recette = requests.get("http://api:8000/randomRecettes", params=parametres)
     recette = recette.json()
     if recette == None:
         st.write("Aucune recette ne correspond à votre recherche")
@@ -92,7 +92,7 @@ if button:
     else:
 # Get recettes
         parametres = {"numberOfRecettes":total,"volaille":volaille,"viande":végé}
-        recettes = requests.get("http://0.0.0.0:8000/Xrecettes", params=parametres)
+        recettes = requests.get("http://api:8000/Xrecettes", params=parametres)
         recettes = recettes.json()
         if recettes == []:
             st.write("Aucune recette ne correspond à votre demande")

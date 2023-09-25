@@ -66,5 +66,5 @@ else :
 
 # Send to mongoDB
 if st.button("Ajouter la recette !"):
-    requests.put("http://0.0.0.0:8000/nouvelleRecette", data = json.dumps(form))
+    requests.put("http://api:8000/nouvelleRecette", data = json.dumps(form))
     st.text("La recette a bien été ajoutée !")
