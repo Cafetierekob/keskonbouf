@@ -19,15 +19,15 @@ spec:
         image: keskonbouf_api:latest
         imagePullPolicy: Never
         ports:
-        -containerPort: 80
+        -containerPort: 8000
         env:
-        - name: mongoUserName
-          ValueFrom:
-            SecretKeyRef:
-              name: user-mongo
-              key: mongoUser
-        - name: mongomdp
-          ValueFrom:
-            SecretKeyRef:
-              name : mdp-mongo
+        - name: mongoUser
+          valueFrom:
+            secretKeyRef:
+              name: mongouser
+              key: User
+        - name: mongoPass
+          valueFrom:
+            secretKeyRef:
+              name : mongopass
               key : mongoPass

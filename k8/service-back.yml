@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: keskonbouf-service
+  name: api
 spec:
   type: ClusterIP
   ports:
-  - port : 8501
-    targetPort: 8501
+  - port : 8000
+    targetPort: 8000
     protocol : TCP
   selector:
-    app: keskonbouf-front
+    app: keskonbouf

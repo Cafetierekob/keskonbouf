@@ -3,19 +3,19 @@ kind: Deployment
 metadata:
   name: keskonbouf-front
   labels:
-    app: keskonbouf
+    app: keskonbouf-front
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: keskonbouf
+      app: keskonbouf-front
   template:
     metadata:
       labels:
-        app: keskonbouf
+        app: keskonbouf-front
     spec:
       containers:
-      - name: api
+      - name: front
         image: keskonbouf_front:latest
         imagePullPolicy: Never
         ports:
