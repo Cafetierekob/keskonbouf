@@ -23,18 +23,35 @@ app = FastAPI(
 
 @app.get("/randomRecettes")
 def getOneRecette(volaille : bool, viande : bool):
-    recetteRandom = recettes.aggregate([{"$match": {"volaille":volaille,"viande":viande}},{"$sample":{"size":1}}])
-    for i in recetteRandom:
-        i.pop("_id")
-        return i
+    if viande == True:
+        recetteRandom = recettes.aggregate([{"$match": {"volaille":volaille}},{"$sample":{"size":1}}])
+        for i in recetteRandom:
+            i.pop("_id")
+            return i
+    else :
+        recetteRandom = recettes.aggregate([{"$match": {"volaille":volaille,"viande":viande}},{"$sample":{"size":1}}])
+        for i in recetteRandom:
+            i.pop("_id")
+            return i      
+
 
 @app.get("/Xrecettes")
 def getXrecettes(numberOfRecettes : int, volaille : bool, viande : bool):
     listRecettes= []
-    for i in recettes.find({"$and" : [{"volaille":volaille}, {"viande" : viande}]}).limit(int(numberOfRecettes)):
-        i.pop("_id")
-        listRecettes.append(i)
-    return listRecettes
+
+    if viande == True:
+        weekRecette = recettes.aggregate([{"$match": {"volaille":volaille}},{"$sample":{"size":numberOfRecettes}}])
+        for i in weekRecette:
+            i.pop("_id")
+            listRecettes.append(i)
+        return listRecettes
+    
+    else :
+        weekRecette = recettes.aggregate([{"$match": {"volaille":volaille,"viande":viande}},{"$sample":{"size":numberOfRecettes}}])
+        for i in weekRecette:
+            listRecettes.append(i)
+        return listRecettes
+
 
 @app.put("/nouvelleRecette")
 def addOneRecette(recetteToAdd : dict):
