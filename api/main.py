@@ -49,6 +49,7 @@ def getXrecettes(numberOfRecettes : int, volaille : bool, viande : bool):
     else :
         weekRecette = recettes.aggregate([{"$match": {"volaille":volaille,"viande":viande}},{"$sample":{"size":numberOfRecettes}}])
         for i in weekRecette:
+            i.pop("_id")
             listRecettes.append(i)
         return listRecettes
 
