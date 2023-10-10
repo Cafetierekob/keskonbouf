@@ -2,14 +2,14 @@ pipeline {
     agent {label "kubeagent"}
 
     stages {
-        stage('Build') {
+        stage('Clean') {
             steps {
                 echo 'Pouet 1'
             }
         }
-        stage('Test') {
+        stage('Build Docker Image') {
             steps {
-                echo 'Pouet 2'
+                docker image build ./api -t keskonbouf_api:latest 
             }
         }
         stage('Deploy') {
