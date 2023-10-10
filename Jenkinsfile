@@ -9,7 +9,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                docker image build keskonbouf/api -t keskonbouf_api:latest 
+               sh 'docker image build keskonbouf/api -t keskonbouf_api:latest'
             }
         }
         stage('Deploy') {
