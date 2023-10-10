@@ -1,26 +1,5 @@
 pipeline {
-  agent {
-    kubeagent {
-      yaml '''
-        apiVersion: v1
-        kind: Pod
-        spec:
-          containers:
-          - name: docker
-            image: docker:latest
-            command:
-            - cat
-            tty: true
-            volumeMounts:
-             - mountPath: /var/run/docker.sock
-               name: docker-sock
-          volumes:
-          - name: docker-sock
-            hostPath:
-              path: /var/run/docker.sock    
-        '''
-    }
-  }
+  agent {label "kubeagent"}
   stages {
     stage('Build') {
       steps {
