@@ -4,8 +4,7 @@ pipeline {
     stage('Build') {
       steps {
         git "api/"
-      }
-      steps{
+
         def api = docker.build("keskonbouf_api:latest")
       }
     }  
