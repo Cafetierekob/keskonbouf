@@ -21,11 +21,28 @@ pipeline {
         '''
     }
   }
+  environment {
+    DOCKERHUBCRED = credentials('1ba81db8-d02b-49d6-9294-4dec3c0cfc89')
+  }
   stages {
     stage('Build-Docker-Image') {
       steps {
         container('docker') {
-          sh 'docker build -t keskonbouf_api:latest ./api'
+          sh 'docker build -t keskonbouf_front:latest ./streamlit_front'
+        }
+      }
+    }
+    stage('login dockerhub'){
+      steps{
+        container('docker'){
+          sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        }
+      }
+    }
+    stage('Push image'){
+      steps{
+        container('docker'){
+         sh 'docker push keskonbouf_front:latest' 
         }
       }
     }
