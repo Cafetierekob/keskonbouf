@@ -9,7 +9,7 @@ pipeline {
           - name: kube
             image: alpine/k8s
             command:
-            - cat
+            - sleep
             tty: true
           - name: docker
             image: docker:latest
