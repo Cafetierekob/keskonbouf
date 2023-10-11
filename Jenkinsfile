@@ -42,7 +42,7 @@ pipeline {
     stage('Push image'){
       steps{
         container('docker'){
-         sh 'docker push cafetiere/keskonbouf_front:keskonbouf_front:latest' 
+         sh 'docker push cafetiere/keskonbouf_front:latest' 
         }
       }
     }
