@@ -3,8 +3,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        git "api/"
-        def api = docker.build("keskonbouf_api:latest")
+        echo "pré pouet"
       }
     }  
     stage('Test') {
