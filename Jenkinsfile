@@ -4,7 +4,7 @@ pipeline {
     stage('Build') {
       agent{docker {image "docker:latest"}}
       steps {
-        sh "docker build -keskonbouf_api:latest ./api"
+        sh "docker build -t keskonbouf_api:latest ./api"
       }
     }  
     stage('Test') {
