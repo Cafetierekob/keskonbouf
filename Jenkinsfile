@@ -28,7 +28,7 @@ pipeline {
     stage('Build-Docker-Image') {
       steps {
         container('docker') {
-          sh 'docker build -t keskonbouf_front:latest ./streamlit_front'
+          sh 'docker build -t cafetiere/keskonbouf_front:latest ./streamlit_front'
         }
       }
     }
@@ -42,7 +42,7 @@ pipeline {
     stage('Push image'){
       steps{
         container('docker'){
-         sh 'docker image push keskonbouf_front:latest' 
+         sh 'docker image push cafetiere/keskonbouf_front:latest' 
         }
       }
     }
