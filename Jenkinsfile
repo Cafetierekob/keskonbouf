@@ -25,11 +25,23 @@ pipeline {
     DOCKERHUBCRED = credentials('dockerhub')
   }
   stages {
-    stage('Build-Docker-Image') {
-      steps {
-        container('docker') {
-          sh 'docker build -t cafetiere/keskonbouf_front:latest ./streamlit_front'
+    stage('Build-Docker-Images') {
+      parallel{
+        stage('build api'){
+          steps {
+            container('docker') {
+              sh 'docker build -t cafetiere/keskonbouf_front:latest ./streamlit_front'
+            }
+          }
         }
+        stage('build front'){
+          steps{
+            container('docker'){
+              sh 'docker build -t cafetiere/keskonbouf_api:latest ./api'
+            }
+          }
+        }
+
       }
     }
     stage('login dockerhub'){
@@ -39,10 +51,21 @@ pipeline {
         }
       }
     }
-    stage('Push image'){
-      steps{
-        container('docker'){
-         sh 'docker image push cafetiere/keskonbouf_front:latest' 
+    stage('Push images'){
+      parallel{
+        stage('Push front'){
+          steps{
+            container('docker'){
+              sh 'docker image push cafetiere/keskonbouf_front:latest' 
+           }
+          }        
+        }
+        stage('Push api'){
+          steps{
+            container('docker'){
+              sh 'docker image push cafetiere/keskonbouf_api:latest' 
+            }
+          }
         }
       }
     }
