@@ -8,6 +8,8 @@ pipeline {
           containers:
           - name: kube
             image: bitnami/kubectl:latest
+            command:
+            - cat
             tty: true
           - name: docker
             image: docker:latest
