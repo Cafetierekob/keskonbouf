@@ -79,20 +79,12 @@ pipeline {
       parallel{
         stage('Deployment front'){
           steps{
-            container('kube'){
-              withKubeConfig([credentialsId : 'jenkins-kind2']){
-                sh 'kubectl rollout restart -n default deployment keskonbouf-front'
-              } 
-            }
-          }      
+            kubernetesDeploy(configs :'k8/front.yml', kubeconfigId: 'kubernetes')
+          } 
         }
         stage('Deployment api'){
           steps{
-            container('kube'){
-              withKubeConfig([credentialsId : 'jenkins-kind2']){
-                sh 'kubectl rollout restart -n default deployment keskonbouf-api'
-              }
-            } 
+            kubernetesDeploy(configs :'k8/api.yml', kubeconfigId: 'kubernetes')
           }
         }
       }
