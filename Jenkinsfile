@@ -6,6 +6,8 @@ pipeline {
         kind: Pod
         spec:
           containers:
+          - name: kube
+            image: bitnami/kubectl:latest
           - name: docker
             image: docker:latest
             command:
@@ -73,20 +75,20 @@ pipeline {
       parallel{
         stage('Deployment front'){
           steps{
-            container('jnlp'){
+            container('kube'){
               withKubeConfig([credentialsId : 'jenkins-kind2']){
-                sh 'kubectl rollout restart -n default deployment keskonbouf-front' 
-              }
+                sh 'kubectl rollout restart -n default deployment keskonbouf-front'
+              } 
             }
           }      
         }
         stage('Deployment api'){
           steps{
-            container('jnlp'){
+            container('kube'){
               withKubeConfig([credentialsId : 'jenkins-kind2']){
-                sh 'kubectl rollout restart -n default deployment keskonbouf-api' 
+                sh 'kubectl rollout restart -n default deployment keskonbouf-api'
               }
-            }          
+            } 
           }
         }
       }
