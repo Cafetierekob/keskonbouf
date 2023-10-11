@@ -5,7 +5,6 @@ pipeline {
         apiVersion: v1
         kind: Pod
         spec:
-          serviceAccountName: jenkins-admin
           containers:
           - name: kube
             image: bitnami/kubectl:latest
@@ -29,6 +28,7 @@ pipeline {
   }
   environment {
     DOCKERHUBCRED = credentials('dockerhub')
+    k8= credentials('jenkins-kind2')
   }
   stages {
     stage('Build-Docker-Images') {
@@ -79,12 +79,16 @@ pipeline {
       parallel{
         stage('Deployment front'){
           steps{
-            kubernetesDeploy(configs :'k8/front.yml', kubeconfigId: 'kubernetes')
+            withKubeConfig([credentialsId : k8]){
+              sh "kubectl rollout restart -n default deployment keskonbouf-front"
+            }
           } 
         }
         stage('Deployment api'){
           steps{
-            kubernetesDeploy(configs :'k8/api.yml', kubeconfigId: 'kubernetes')
+            withKubeConfig([credentialsId : k8]){
+              sh 'kubectl rollout restart -n default deployment keskonbouf-api'
+            }
           }
         }
       }
