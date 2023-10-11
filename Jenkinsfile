@@ -4,6 +4,7 @@ pipeline {
     stage('Build') {
       steps {
         echo "pré pouet"
+        echo "re pré pouet"
       }
     }  
     stage('Test') {
