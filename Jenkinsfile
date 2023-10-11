@@ -4,7 +4,7 @@ pipeline {
     stage('Build') {
       steps {
         container('docker') {
-          sh 'docker image build ./api -t keskonbouf_api:latest'
+          sh ' service docker start && docker image build ./api -t keskonbouf_api:latest'
         }
       }
     }  
