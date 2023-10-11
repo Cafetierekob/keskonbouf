@@ -22,7 +22,7 @@ pipeline {
     }
   }
   environment {
-    DOCKERHUBCRED = credentials('1ba81db8-d02b-49d6-9294-4dec3c0cfc89')
+    DOCKERHUBCRED = credentials('dockerhub')
   }
   stages {
     stage('Build-Docker-Image') {
