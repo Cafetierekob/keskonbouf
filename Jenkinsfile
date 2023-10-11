@@ -7,7 +7,7 @@ pipeline {
         spec:
           containers:
           - name: kube
-            image: bitnami/kubectl:latest
+            image: alpine/k8s
             command:
             - cat
             tty: true
