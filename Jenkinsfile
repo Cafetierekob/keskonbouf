@@ -79,14 +79,14 @@ pipeline {
       parallel{
         stage('Deployment front'){
           steps{
-            withKubeConfig([credentialsId : k8]){
+            withKubeConfig(){
               sh "kubectl rollout restart -n default deployment keskonbouf-front"
             }
           } 
         }
         stage('Deployment api'){
           steps{
-            withKubeConfig([credentialsId : k8]){
+            withKubeConfig(){
               sh 'kubectl rollout restart -n default deployment keskonbouf-api'
             }
           }
