@@ -3,9 +3,10 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        container('docker') {
-          sh ' service docker start && docker image build ./api -t keskonbouf_api:latest'
-        }
+        git "api/"
+      }
+      steps{
+        def api = docker.build("keskonbouf_api:latest")
       }
     }  
     stage('Test') {
