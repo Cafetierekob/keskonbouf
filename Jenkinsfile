@@ -69,5 +69,19 @@ pipeline {
         }
       }
     }
+    stage('Deplyment k8s'){
+      parallel{
+        stage('Deployment front'){
+          steps{
+            sh 'kubectl rollout restart -n default deployment keskonbouf-front' 
+          }        
+        }
+        stage('Deployment api'){
+          steps{
+            sh 'kubectl rollout restart -n default deployment keskonbouf-api' 
+          }
+        }
+      }
+    }
   } 
 }

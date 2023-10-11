@@ -5,7 +5,7 @@ metadata:
   labels:
     app: keskonbouf
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: keskonbouf
@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
       - name: api
-        image: keskonbouf_api:latest
-        imagePullPolicy: Never
+        image: cafetiere/keskonbouf_api:latest
+        imagePullPolicy: Always
         ports:
         -containerPort: 8000
         env:
