@@ -73,15 +73,19 @@ pipeline {
       parallel{
         stage('Deployment front'){
           steps{
-            withKubeConfig([credentialsId : 'jenkins-kind2']){
-              sh 'kubectl rollout restart -n default deployment keskonbouf-front' 
+            container('jnlp'){
+              withKubeConfig([credentialsId : 'jenkins-kind2']){
+                sh 'kubectl rollout restart -n default deployment keskonbouf-front' 
+              }
             }
           }      
         }
         stage('Deployment api'){
           steps{
-            withKubeConfig([credentialsId : 'jenkins-kind2']){
-              sh 'kubectl rollout restart -n default deployment keskonbouf-api' 
+            container('jnlp'){
+              withKubeConfig([credentialsId : 'jenkins-kind2']){
+                sh 'kubectl rollout restart -n default deployment keskonbouf-api' 
+              }
             }          
           }
         }
