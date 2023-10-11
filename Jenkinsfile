@@ -79,15 +79,19 @@ pipeline {
       parallel{
         stage('Deployment front'){
           steps{
-            withKubeConfig(){
-              sh "kubectl rollout restart -n default deployment keskonbouf-front"
+            container('jnlp'){
+              withKubeConfig(){
+                sh "kubectl rollout restart -n default deployment keskonbouf-front"
+              }
             }
           } 
         }
         stage('Deployment api'){
           steps{
-            withKubeConfig(){
-              sh 'kubectl rollout restart -n default deployment keskonbouf-api'
+            container('jnlp'){
+              withKubeConfig(){
+                sh 'kubectl rollout restart -n default deployment keskonbouf-api'
+              }
             }
           }
         }
