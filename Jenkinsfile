@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh "docker build -t keskonbouf_api:latest ./api"
+        ls
       }
     }  
     stage('Test') {
