@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 # Page title
-st.title("Keskonbouf avec jenkins:spaghetti:")
+st.title("Keskonbouf avec jenkins automatique :spaghetti:")
 st.header("Générateur de planning de repas")
 st.divider()
 
