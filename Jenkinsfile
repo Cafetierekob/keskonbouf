@@ -8,7 +8,7 @@ pipeline {
           serviceAccountName: jenkins-agent
           containers:
           - name: kube
-            image: alpine/k8s
+            image: alpine/k8s:1.25.14
             command:
             - cat
             tty: true
