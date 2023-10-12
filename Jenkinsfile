@@ -28,7 +28,6 @@ pipeline {
   }
   environment {
     DOCKERHUBCRED = credentials('dockerhub')
-    k8= credentials('jenkins-kind2')
   }
   stages {
     stage('Build-Docker-Images') {
@@ -76,26 +75,23 @@ pipeline {
       }
     }
     stage('Deplyment k8s'){
+      agent{ label: main}
       parallel{
         stage('Deployment front'){
           steps{
-            container('jnlp'){
-              withKubeConfig(){
-                sh "kubectl rollout restart -n default deployment keskonbouf-front"
+            withKubeConfig(){
+              sh "kubectl rollout restart -n default deployment keskonbouf-front"
               }
             }
           } 
-        }
         stage('Deployment api'){
           steps{
-            container('jnlp'){
-              withKubeConfig(){
-                sh 'kubectl rollout restart -n default deployment keskonbouf-api'
-              }
+            withKubeConfig(){
+              sh 'kubectl rollout restart -n default deployment keskonbouf-api'
             }
           }
         }
       }
     }
-  } 
-}
+  }
+} 
