@@ -10,7 +10,7 @@ pipeline {
           - name: kube
             image: d3fk/kubectl:latest
             command:
-            - cat
+            - sleep
             tty: true
           - name: docker
             image: docker:latest
