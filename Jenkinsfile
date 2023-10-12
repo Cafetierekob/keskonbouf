@@ -8,7 +8,7 @@ pipeline {
           serviceAccountName: jenkins-agent
           containers:
           - name: kube
-            image: bitnami/kubectl:latest
+            image: d3fk/kubectl:latest
             command:
             - cat
             tty: true
@@ -78,7 +78,7 @@ pipeline {
     stage('Deplyment front'){
       steps{
         container('kube'){
-          sh "echo 'pouet'"
+          sh "kubectl rollout restart -n default deployment keskonbouf-front"
         }
       }
     }
