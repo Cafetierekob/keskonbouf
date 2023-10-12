@@ -8,9 +8,9 @@ pipeline {
           serviceAccountName: jenkins-agent
           containers:
           - name: kube
-            image: d3fk/kubectl:latest
+            image: alpine/k8s
             command:
-            - sleep
+            - cat
             tty: true
           - name: docker
             image: docker:latest
