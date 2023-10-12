@@ -76,19 +76,17 @@ pipeline {
     }
     stage('Deplyment k8s'){
       agent{ label: main}
-      parallel{
-        stage('Deployment front'){
-          steps{
-            withKubeConfig(){
-              sh "kubectl rollout restart -n default deployment keskonbouf-front"
-              }
-            }
-          } 
-        stage('Deployment api'){
-          steps{
-            withKubeConfig(){
-              sh 'kubectl rollout restart -n default deployment keskonbouf-api'
-            }
+      stage('Deployment front'){
+        steps{
+          withKubeConfig(){
+            sh "kubectl rollout restart -n default deployment keskonbouf-front"
+          }
+        }
+      } 
+      stage('Deployment api'){
+        steps{
+          withKubeConfig(){
+            sh 'kubectl rollout restart -n default deployment keskonbouf-api'
           }
         }
       }
