@@ -5,7 +5,7 @@ pipeline {
         apiVersion: v1
         kind: Pod
         spec:
-        serviceAccountName: jenkins-agent
+          serviceAccountName: jenkins-agent
           containers:
           - name: kube
             image: bitnami/kubectl:latest
