@@ -78,7 +78,7 @@ pipeline {
     stage('Deplyment front'){
       steps{
         container('kube'){
-          kubectl rollout restart -n default deployment keskonbouf-front
+          sh "echo 'pouet'"
         }
       }
     }
