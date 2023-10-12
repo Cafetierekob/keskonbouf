@@ -5,7 +5,6 @@ pipeline {
         apiVersion: v1
         kind: Pod
         spec:
-          serviceAccountName: jenkinsagent
           containers:
           - name: kube
             image: bitnami/kubectl:latest
@@ -78,7 +77,9 @@ pipeline {
     stage('Deplyment front'){
       steps{
         container('kube'){
-          sh 'kubectl rollout restart -n default deployment keskonbouf-front'
+          withKubeConfig([credentialsId :'jenkinsagent']){
+            sh 'kubectl rollout restart -n default deployment keskonbouf-front'
+          }
         }
       }
     }
