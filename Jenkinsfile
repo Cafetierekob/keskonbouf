@@ -77,7 +77,7 @@ pipeline {
     stage('Deplyment front'){
       steps{
         container('kube'){
-          withKubeConfig([credentialsId :'jenkinsagent']){
+          withKubeConfig([namespace :'default']){
             sh 'kubectl rollout restart -n default deployment keskonbouf-front'
           }
         }
