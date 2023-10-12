@@ -14,13 +14,15 @@ pipeline {
             volumeMounts:
              - mountPath: /var/run/docker.sock
                name: docker-sock
+             - mountPath: /usr/local/bin/kubectl
+               name: kubectl
           volumes:
           - name: docker-sock
             hostPath:
               path: /var/run/docker.sock
           - name: kubectl
             hostPath:
-              path: /    
+              path:  /usr/local/bin/kubectl
         '''
     }
   }
@@ -74,7 +76,9 @@ pipeline {
     }
     stage('Deplyment front'){
       steps{
-        sh 'kubectl rollout restart -n default deployment keskonbouf-front'
+        container('docker'){
+          sh 'kubectl rollout restart -n default deployment keskonbouf-front'
+        }
       }
     }
   }
