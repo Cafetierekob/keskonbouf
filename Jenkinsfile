@@ -6,6 +6,8 @@ pipeline {
         kind: Pod
         spec:
           containers:
+          - name: kube
+            image: bitnami/kubectl:latest
           - name: docker
             image: docker:latest
             command:
@@ -14,15 +16,10 @@ pipeline {
             volumeMounts:
              - mountPath: /var/run/docker.sock
                name: docker-sock
-             - mountPath: /usr/local/bin/kubectl
-               name: kubectl
           volumes:
           - name: docker-sock
             hostPath:
               path: /var/run/docker.sock
-          - name: kubectl
-            hostPath:
-              path:  /usr/local/bin/kubectl
         '''
     }
   }
@@ -76,7 +73,7 @@ pipeline {
     }
     stage('Deplyment front'){
       steps{
-        container('docker'){
+        container('kube'){
           sh 'kubectl rollout restart -n default deployment keskonbouf-front'
         }
       }
