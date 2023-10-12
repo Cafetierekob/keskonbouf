@@ -75,15 +75,17 @@ pipeline {
       }
     }
     stage('Deplyment front'){
-      agent{ label 'main'}
       steps{
-        sh "kubectl rollout restart -n default deployment keskonbouf-front"
+        sh "curl -LO https://dl.k8s.io/release/$(curl -Ls https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
       }
-    }
-    stage('Deployment api'){
-      agent{label 'main'}
       steps{
-        sh 'kubectl rollout restart -n default deployment keskonbouf-api'
+        sh 'chmod +x ./kubectl'
+      }
+      steps {
+        sh 'mv ./kubectl /usr/local/bin/kubectl'
+      }
+      steps{
+        sh 'kubectl version --client'
       }
     }
   }
