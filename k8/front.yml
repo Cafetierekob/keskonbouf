@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: keskonbouf-front
-  namespace: jenkins
+  namespace: default
   labels:
     app: keskonbouf-front
 spec:
@@ -20,4 +20,4 @@ spec:
         image: cafetiere/keskonbouf_front:latest
         imagePullPolicy: Always
         ports:
-        -containerPort: 8501
+        - containerPort: 8501

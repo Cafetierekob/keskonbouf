@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: keskonbouf-api
-  namespace: jenkins
   labels:
     app: keskonbouf
 spec:
@@ -20,7 +19,7 @@ spec:
         image: cafetiere/keskonbouf_api:latest
         imagePullPolicy: Always
         ports:
-        -containerPort: 8000
+        - containerPort: 8000
         env:
         - name: mongoUser
           valueFrom:
