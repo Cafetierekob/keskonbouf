@@ -6,6 +6,11 @@ pipeline {
         kind: Pod
         spec:
           containers:
+          - name: kube
+            image: bitnami/kubectl:latest
+            command:
+            - cat
+            tty: true
           - name: docker
             image: docker:latest
             command:
@@ -71,13 +76,14 @@ pipeline {
     }
     stage('Deplyment front'){
       steps{
-        podTemplate('kube'){
-          withKubeConfig([credentialsId: 'jenkinsagent']){
-            sh 'kubectl rollout restart -n default deployment keskonbouf-front'
+        container('kube'){
+          withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'jenkinsagent', namespace: 'default', restrictKubeConfigAccess: false, serverUrl: 'https://192.168.39.129:8443') {
+            sh "kubectl rollout restart -n default deployment keskonbouf-front"
           }
         }
       }
     }
   }
 }
+
 
