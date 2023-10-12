@@ -76,7 +76,7 @@ pipeline {
     }
     stage('Deplyment front'){
       steps{
-        sh "curl -LO https://dl.k8s.io/release/$(curl -Ls https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        sh 'curl -LO https://dl.k8s.io/release/$(curl -Ls https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl'
       }
       steps{
         sh 'chmod +x ./kubectl'
