@@ -6,11 +6,6 @@ pipeline {
         kind: Pod
         spec:
           containers:
-          - name: kube
-            image: bitnami/kubectl:latest
-            command:
-            - cat
-            tty: true
           - name: docker
             image: docker:latest
             command:
@@ -22,7 +17,10 @@ pipeline {
           volumes:
           - name: docker-sock
             hostPath:
-              path: /var/run/docker.sock    
+              path: /var/run/docker.sock
+          - name: kubectl
+            hostPath:
+              path: /    
         '''
     }
   }
@@ -75,6 +73,9 @@ pipeline {
       }
     }
     stage('Deplyment front'){
+      steps{
+        sh 'kubectl rollout restart -n default deployment keskonbouf-front'
+      }
     }
   }
 }
