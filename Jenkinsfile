@@ -78,7 +78,7 @@ pipeline {
     stage('Deplyment front'){
       steps{
         container('kube'){
-          bash 'kubectl rollout restart -n default deployment keskonbouf-front'
+          kubectl rollout restart -n default deployment keskonbouf-front
         }
       }
     }
