@@ -79,7 +79,7 @@ pipeline {
       steps{
         container('kube'){
           withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'jenkins-agent', namespace: 'jenkins', restrictKubeConfigAccess: false, serverUrl: 'https://192.168.39.129:8443') {
-            sh "kubectl rollout restart -n default deployment keskonbouf-front"
+            sh "kubectl delete -n default deployment keskonbouf-front && kubectl apply -f k8/front.yml"
           }
         }
       }
