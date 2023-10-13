@@ -53,7 +53,7 @@ pipeline {
     stage('login dockerhub'){
       steps{
         container('docker'){
-          sh 'docker login -u $DOCKERHUBCRED_USR -p $DOCKERHUBCRED_PSW'
+          sh 'echo $DOCKERHUBCRED_PSW | docker login -u $DOCKERHUBCRED_USR --password-stdin'
         }
       }
     }
