@@ -26,9 +26,9 @@ pipeline {
               path: /var/run/docker.sock
         '''
     }
+  }
   options{
     skipDefaultCheckout(true)
-  }
   }
   environment {
     DOCKERHUBCRED = credentials('dockerhub')
