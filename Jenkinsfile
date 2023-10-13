@@ -34,6 +34,9 @@ pipeline {
     DOCKERHUBCRED = credentials('dockerhub')
   }
   stages {
+    stage('check github'){
+      checkout scm
+    }
     stage('Build-Docker-Images') {
       parallel{
         stage('build api'){
