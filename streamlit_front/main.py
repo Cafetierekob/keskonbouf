@@ -3,6 +3,7 @@ sys.path.insert(0,"/home/clement/Bureau/keskonbouf")
 import streamlit as st
 import requests
 import pandas as pd
+import datetime
 
 # Page metadata
 st.set_page_config(
@@ -33,11 +34,27 @@ else:
 végé = not végé
 volaille = not volaille # Changing from "without viande" to "végé"
 
+deSaison = st.checkbox("100\% de saison")
+
+myDatetime = datetime.datetime.today().strftime('%m') # Date for seasonal recipe
+if myDatetime in ["3","4","5"]:
+    saisonActuelle = "Printemps"
+elif myDatetime in ["6","7","8"]:
+    saisonActuelle = "Été"
+elif myDatetime in ["9","10","11"]:
+    saisonActuelle = "Automne"
+else :
+    saisonActuelle = "Hiver"
+
+
+
+
+
 
 # fetch recette
 submitted = st.button("Let's go !")
 if submitted:
-    parametres = {"volaille" : volaille,"viande" : végé}
+    parametres = {"volaille" : volaille,"viande" : végé, "deSaison" : deSaison, "saison" : saisonActuelle}
     recette = requests.get("http://api:8000/randomRecettes", params=parametres)
     recette = recette.json()
     if recette == None:

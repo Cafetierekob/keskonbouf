@@ -22,17 +22,30 @@ app = FastAPI(
 )
 
 @app.get("/randomRecettes")
-def getOneRecette(volaille : bool, viande : bool):
+def getOneRecette(volaille : bool, viande : bool, saison: str, deSaison : bool):
     if viande == True:
-        recetteRandom = recettes.aggregate([{"$match": {"volaille":volaille}},{"$sample":{"size":1}}])
-        for i in recetteRandom:
-            i.pop("_id")
-            return i
+        if deSaison == True:
+            recetteRandom = recettes.aggregate([{"$match": {"volaille":volaille, "saison":saison}},{"$sample":{"size":1}}])
+            for i in recetteRandom:
+                i.pop("_id")
+                return i
+        else:
+            recetteRandom = recettes.aggregate([{"$match": {"$or": [{"saison":"Toutes saisons"},{"saison":saison}],"$and":[{"volaille":volaille}]}},{"$sample":{"size":1}}])
+            for i in recetteRandom:
+                i.pop("_id")
+                return i
     else :
-        recetteRandom = recettes.aggregate([{"$match": {"volaille":volaille,"viande":viande}},{"$sample":{"size":1}}])
-        for i in recetteRandom:
-            i.pop("_id")
-            return i      
+        if deSaison == True:
+            recetteRandom = recettes.aggregate([{"$match": {"volaille":volaille,"viande":viande, "saison":saison}},{"$sample":{"size":1}}])
+            for i in recetteRandom:
+                i.pop("_id")
+                return i   
+        else:
+            recetteRandom = recettes.aggregate([{"$match": {"$or": [{"saison":"Toutes saisons"},{"saison":saison}],"$and":[{"volaille":volaille, "viande":viande}]}},{"$sample":{"size":1}}])
+            for i in recetteRandom:
+                i.pop("_id")
+                return i   
+
 
 
 @app.get("/Xrecettes")
