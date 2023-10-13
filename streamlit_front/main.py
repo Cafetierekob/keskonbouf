@@ -49,8 +49,6 @@ else :
 
 
 
-
-
 # fetch recette
 submitted = st.button("Let's go !")
 if submitted:
