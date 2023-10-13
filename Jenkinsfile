@@ -35,7 +35,9 @@ pipeline {
   }
   stages {
     stage('check github'){
-      checkout scm
+      steps{
+        checkout scm
+      }
     }
     stage('Build-Docker-Images') {
       parallel{
