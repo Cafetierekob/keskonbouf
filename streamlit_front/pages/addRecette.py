@@ -22,6 +22,9 @@ st.divider()
 # recette name
 recetteName = st.text_input("Quelle recette souhaitez-vous ajouter ?")
 
+# Type de recette
+typeRecette = st.radio("C'est bon pour :",("L'apéro, Le plat principal, Le dessert "))
+
 # Volaille ?
 volaille = st.checkbox("La recette contient de la volaille")
 
@@ -30,6 +33,9 @@ if volaille:
     viande = st.checkbox("La recette contient de la viande", value=True, disabled=True)
 else:
     viande = st.checkbox("La recette contient de la viande")
+
+# Saison ?
+saison = st.selectbox("Est-ce un plat de saison ?",("Toutes saisons, Printemps, Eté, Automne, Hiver"))
 
 # Where is the recette?
 recetteLocation = st.selectbox("Où la recette est-elle stockée ?", ("Sur internet", "Recette officielle Mr Cuisine", "Dans un livre de recettes", "Dans le carnet de recette", "Pas de recette précise"))
