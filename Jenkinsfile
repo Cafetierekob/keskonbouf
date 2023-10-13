@@ -26,6 +26,9 @@ pipeline {
               path: /var/run/docker.sock
         '''
     }
+  options{
+    skipDefaultCheckout(true)
+  }
   }
   environment {
     DOCKERHUBCRED = credentials('dockerhub')
@@ -80,6 +83,17 @@ pipeline {
         container('kube'){
           sh "kubectl rollout restart -n default deployment keskonbouf-front && kubectl rollout restart -n default deployment keskonbouf-api"
         }
+      }
+    }
+    post {
+      // Clean after build
+      always {
+          cleanWs(cleanWhenNotBuilt: false,
+                  deleteDirs: true,
+                  disableDeferredWipeout: true,
+                  notFailBuild: true,
+                  patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+                             [pattern: '.propsfile', type: 'EXCLUDE']])
       }
     }
   }
