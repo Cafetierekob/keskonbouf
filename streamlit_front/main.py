@@ -20,58 +20,81 @@ st.title("Keskonbouf ce soir ?:spaghetti:")
 st.header("Générateur de planning de repas")
 st.divider()
 
-# Get a random recette
+
+# Get a random recette 
 st.header("Besoin d'une seule recette ?")
 
-végé = st.checkbox("Végétarienne") # Végé or not
+typeOfPlate = st.selectbox("Quel type de recette souhaitez-vous ?", ("Plat Principal","Apéro", "Entrée",  "Dessert"))
 
-
-if végé:
-    volaille = st.checkbox("Sans volaille",value= True, disabled=True) # with volaille or not
-else:
-    volaille = st.checkbox("Sans volaille")
-
-végé = not végé
-volaille = not volaille # Changing from "without viande" to "végé"
-
-deSaison = st.checkbox("100\% de saison")
-
-myDatetime = datetime.datetime.today().strftime('%m') # Date for seasonal recipe
-if myDatetime in ["3","4","5"]:
-    saisonActuelle = "Printemps"
-elif myDatetime in ["6","7","8"]:
-    saisonActuelle = "Été"
-elif myDatetime in ["9","10","11"]:
-    saisonActuelle = "Automne"
-else :
-    saisonActuelle = "Hiver"
-
-
-
+# Random recette (Apéro, Entrée, Plat principal)
+if typeOfPlate != "Dessert":
+    végé = st.checkbox("Végétarienne") # Végé or not
+    if végé:
+        volaille = st.checkbox("Sans volaille",value= True, disabled=True) # with volaille or not
+    else:
+        volaille = st.checkbox("Sans volaille")
+    végé = not végé
+    volaille = not volaille # Changing from "without viande" to "végé"
+    deSaison = st.checkbox("100\% de saison") # Only seasonal recipees
+    myDatetime = datetime.datetime.today().strftime('%m') # Date for seasonal recipe
+    if myDatetime in ["3","4","5"]:
+        saisonActuelle = "Printemps"
+    elif myDatetime in ["6","7","8"]:
+        saisonActuelle = "Été"
+    elif myDatetime in ["9","10","11"]:
+        saisonActuelle = "Automne"
+    else :
+        saisonActuelle = "Hiver"
 
 # fetch recette
-submitted = st.button("Let's go !")
-if submitted:
-    parametres = {"volaille" : volaille,"viande" : végé, "deSaison" : deSaison, "saison" : saisonActuelle}
-    recette = requests.get("http://api:8000/randomRecettes", params=parametres)
-    recette = recette.json()
-    if recette == None:
-        st.write("Aucune recette ne correspond à votre recherche")
-    elif recette["localisation"]["principal"] == "Sur internet":
-        st.write(f"{recette['name']}")
-        st.write(f"La recette se trouve [ici]({recette['localisation']['url']})")
-    elif recette["localisation"]["principal"] == "Dans un livre de recettes":
-        st.write(f"{recette['name']}")
-        st.write(f"La recette se trouve dans le livre {recette['localisation']['title']} à la page {recette['localisation']['page']}")
-    elif recette["localisation"]["principal"] == "Recette officielle Mr Cuisine":
-        st.write(f"{recette['name']}")
-        st.write(f"La recette se trouve directement dans le Mr Cuisine")
-    elif recette["localisation"]["principal"] == "Dans le carnet de recette":
-        st.write(f"{recette['name']}")
-        st.write(f"La recette se trouve dans le carnet de recettes dans la section {recette['localisation']['section']}")
-    else :
-        st.write(f"{recette['name']}")
+    submitted = st.button("Let's go !")
+    if submitted:
+        parametres = {"volaille" : volaille,"viande" : végé, "deSaison" : deSaison, "saison" : saisonActuelle}
+        recette = requests.get("http://api:8000/randomRecettes", params=parametres)
+        recette = recette.json()
+        if recette == None:
+            st.write("Aucune recette ne correspond à votre recherche")
+        elif recette["localisation"]["principal"] == "Sur internet":
+            st.write(f"{recette['name']}")
+            st.write(f"La recette se trouve [ici]({recette['localisation']['url']})")
+        elif recette["localisation"]["principal"] == "Dans un livre de recettes":
+            st.write(f"{recette['name']}")
+            st.write(f"La recette se trouve dans le livre {recette['localisation']['title']} à la page {recette['localisation']['page']}")
+        elif recette["localisation"]["principal"] == "Recette officielle Mr Cuisine":
+            st.write(f"{recette['name']}")
+            st.write(f"La recette se trouve directement dans le Mr Cuisine")
+        elif recette["localisation"]["principal"] == "Dans le carnet de recette":
+            st.write(f"{recette['name']}")
+            st.write(f"La recette se trouve dans le carnet de recettes dans la section {recette['localisation']['section']}")
+        else :
+            st.write(f"{recette['name']}")
+
+
+else : #random dessert
+    submitted_dessert = st.button("Let's go !")
+    if submitted_dessert:
+        recette = requests.get("http://api:8000/dessert")
+        recette = recette.json()
+        if recette == None:
+            st.write("Aucune recette ne correspond à votre recherche")
+        elif recette["localisation"]["principal"] == "Sur internet":
+            st.write(f"{recette['name']}")
+            st.write(f"La recette se trouve [ici]({recette['localisation']['url']})")
+        elif recette["localisation"]["principal"] == "Dans un livre de recettes":
+            st.write(f"{recette['name']}")
+            st.write(f"La recette se trouve dans le livre {recette['localisation']['title']} à la page {recette['localisation']['page']}")
+        elif recette["localisation"]["principal"] == "Recette officielle Mr Cuisine":
+            st.write(f"{recette['name']}")
+            st.write(f"La recette se trouve directement dans le Mr Cuisine")
+        elif recette["localisation"]["principal"] == "Dans le carnet de recette":
+            st.write(f"{recette['name']}")
+            st.write(f"La recette se trouve dans le carnet de recettes dans la section {recette['localisation']['section']}")
+        else :
+            st.write(f"{recette['name']}")
+
 st.divider()
+
+
 
 # Get X recette for the week
 st.header("Planning de la semaine")

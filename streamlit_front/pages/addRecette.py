@@ -23,7 +23,7 @@ st.divider()
 recetteName = st.text_input("Quelle recette souhaitez-vous ajouter ?")
 
 # Type de recette
-typeRecette = st.radio("C'est bon pour :",["L'apéro", "Le plat principal", "Le dessert"])
+typeRecette = st.radio("C'est bon pour :",["L'apéro", "L'entrée", "Le plat principal", "Le dessert"],)
 
 # Volaille ?
 volaille = st.checkbox("La recette contient de la volaille")
