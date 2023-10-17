@@ -1,6 +1,6 @@
 pipeline {
   agent {
-    kubernetes {
+    any {
       yaml '''
         apiVersion: v1
         kind: Pod
@@ -26,9 +26,6 @@ pipeline {
               path: /var/run/docker.sock
         '''
     }
-  }
-  options{
-    skipDefaultCheckout(true)
   }
   environment {
     DOCKERHUBCRED = credentials('dockerhub')
@@ -89,17 +86,6 @@ pipeline {
           sh "kubectl rollout restart -n default deployment keskonbouf-front && kubectl rollout restart -n default deployment keskonbouf-api"
         }
       }
-    }
-  }
-  post {
-    // Clean after build
-    always {
-        cleanWs(cleanWhenNotBuilt: false,
-                deleteDirs: true,
-                disableDeferredWipeout: true,
-                notFailBuild: true,
-                patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
-                            [pattern: '.propsfile', type: 'EXCLUDE']])
     }
   }
 }
