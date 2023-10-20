@@ -49,7 +49,7 @@ if typeOfPlate != "Dessert":
 # fetch recette
     submitted = st.button("Let's go !")
     if submitted:
-        parametres = {"volaille" : volaille,"viande" : végé, "deSaison" : deSaison, "saison" : saisonActuelle}
+        parametres = {"typeOfRecette" : typeOfPlate, "volaille" : volaille,"viande" : végé, "deSaison" : deSaison, "saison" : saisonActuelle}
         recette = requests.get("http://api:8000/randomRecettes", params=parametres)
         recette = recette.json()
         if recette == None:
